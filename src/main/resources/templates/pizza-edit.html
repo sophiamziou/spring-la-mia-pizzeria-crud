@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body th:object="${pizza}">
+	<h1>Aggiungi una nuova pizza</h1>
+	<form method="post" th:action="@{/pizza/update/{id} (id=*{id})}">
+		<label>Nome</label>
+		<input type="text" name="name" th:field="*{name}">
+		<br>
+		<label>Descrizione</label>
+		<input type="text" name="description" th:field="*{description}">
+		<br>
+		<label>Url foto</label>
+		<input type="text" name="img" th:field="*{img}">
+		<br>
+		<label>Prezzo</label>
+		<input type="number" name="price" th:field="*{price}">
+		<br>
+		<input type="submit" value="update"> 
+	</form>
+</body>
+</html>

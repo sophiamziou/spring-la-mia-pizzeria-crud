@@ -17,6 +17,10 @@
 				<a th:href="@{/pizza/{id} (id=*{id})}">
 					[[ *{name} ]]
 				</a>
+				-
+				<a th:href="@{/pizza/delete/{id} (id=*{id})}">Elimina</a>
+				-
+				<a th:href="@{/pizza/edit/{id} (id=*{id})}">Modifica</a>
 			</div>
 			<img width="150px" th:src="*{img}">
 		</li>

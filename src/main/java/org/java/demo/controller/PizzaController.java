@@ -1,6 +1,7 @@
 package org.java.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.java.demo.pojo.Pizza;
 import org.java.demo.service.PizzaService;
@@ -29,24 +30,17 @@ public class PizzaController {
 	}
 	
 	@GetMapping("/pizza/{id}")
-	public String getPizza(Model model, @PathVariable("id") int id) {
-		
-		Pizza selectedPizza = null;
-	    for (Pizza p : pizzaService.findAll()) {
-	        if (p.getId() == id) {
-	            selectedPizza = p;
-	            break;
-	        }
-	    }
+	public String getPizzaShow(
+			Model model,
+			@PathVariable int id
+		) {
 
-	    if (selectedPizza != null) {
-	        model.addAttribute("pizza", selectedPizza);
-	    } else {
-	        model.addAttribute("pizza", "nessuna pizza disponibile");
-	    }
-		
+		Optional<Pizza> pizzaOpt = pizzaService.findById(id);
+		Pizza pizza = pizzaOpt.get();
+
+		model.addAttribute("pizza", pizza);
+
 		return "show";
-		
 	}
 	
 	@PostMapping("/pizze/search")
@@ -65,8 +59,36 @@ public class PizzaController {
 	
 	@PostMapping("/pizza/create")
 	public String savePizza(@ModelAttribute Pizza pizza) {
-		
 		pizzaService.save(pizza);
 		return "redirect:/";
+	}
+	
+	@GetMapping("/pizza/delete/{id}")
+	public String deletePizza(Model model, @PathVariable("id") int id) {
+		
+		Optional<Pizza> pizzaOpt = pizzaService.findById(id);
+		Pizza pizza = pizzaOpt.get();
+		pizzaService.deletePizza(pizza); 
+		
+	    return "redirect:/";
+		
+	}
+	
+	@GetMapping("/pizza/edit/{id}")
+	public String editPizza(Model model, @PathVariable("id") int id) {
+		
+		Optional<Pizza> pizzaOpt = pizzaService.findById(id);
+		Pizza pizza = pizzaOpt.get();
+		model.addAttribute("pizza", pizza);
+		
+		return "pizza-edit";
+	}
+	
+	@PostMapping("/pizza/update/{id}")
+	public String updatePizza(Model model, @PathVariable("id") int id, @ModelAttribute Pizza pizza) {
+		 
+		pizzaService.save(pizza);
+		
+	    return "redirect:/";
 	}
 }
