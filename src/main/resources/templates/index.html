@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Le nostre pizze:</h1>
+	<form action="/pizze/search" method="post">
+		<input type="text" name="name" th:value="${name}">
+		<input type="submit" value="search"> 
+	</form>
+ 	<ul>
+		<li th:each="pizza : ${pizze}" th:object="${pizza}" >
+			<div>
+				<a th:href="@{/pizza/{id} (id=*{id})}">
+					[[ *{name} ]]
+				</a>
+			</div>
+			<img width="150px" th:src="*{img}">
+		</li>
+	</ul>
+</body>
+</html>
