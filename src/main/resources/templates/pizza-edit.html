@@ -9,15 +9,27 @@
 	<form method="post" th:action="@{/pizza/update/{id} (id=*{id})}">
 		<label>Nome</label>
 		<input type="text" name="name" th:field="*{name}">
+		<label style="color: red" th:if="${errors != null && errors.hasFieldErrors('name')}">
+			[[ ${errors.getFieldError('name').defaultMessage} ]]
+		</label>
 		<br>
 		<label>Descrizione</label>
 		<input type="text" name="description" th:field="*{description}">
+		<label style="color: red" th:if="${errors != null && errors.hasFieldErrors('description')}">
+			[[ ${errors.getFieldError('description').defaultMessage} ]]
+		</label>
 		<br>
 		<label>Url foto</label>
 		<input type="text" name="img" th:field="*{img}">
+		<label style="color: red" th:if="${errors != null && errors.hasFieldErrors('img')}">
+			[[ ${errors.getFieldError('img').defaultMessage} ]]
+		</label>
 		<br>
 		<label>Prezzo</label>
 		<input type="number" name="price" th:field="*{price}">
+		<label style="color: red" th:if="${errors != null && errors.hasFieldErrors('price')}">
+			[[ ${errors.getFieldError('price').defaultMessage} ]]
+		</label>
 		<br>
 		<input type="submit" value="update"> 
 	</form>

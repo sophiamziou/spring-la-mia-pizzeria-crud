@@ -8,11 +8,15 @@ import org.java.demo.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class PizzaController {
@@ -53,12 +57,25 @@ public class PizzaController {
 	}
 	
 	@GetMapping("/pizza/create")
-	public String createPizza() {
+	public String createPizza(Model model) {
+		model.addAttribute("pizza", new Pizza());
 		return "pizza-create";
 	}
 	
 	@PostMapping("/pizza/create")
-	public String savePizza(@ModelAttribute Pizza pizza) {
+	public String savePizza(Model model, @Valid @ModelAttribute Pizza pizza, BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+			
+			for (ObjectError err : bindingResult.getAllErrors()) 
+				System.err.println("error: " + err.getDefaultMessage());
+			
+			model.addAttribute("errors", bindingResult);
+			model.addAttribute("pizza", pizza);
+			
+			return "pizza-create";
+		}
+		
 		pizzaService.save(pizza);
 		return "redirect:/";
 	}
@@ -85,8 +102,19 @@ public class PizzaController {
 	}
 	
 	@PostMapping("/pizza/update/{id}")
-	public String updatePizza(Model model, @PathVariable("id") int id, @ModelAttribute Pizza pizza) {
-		 
+	public String updatePizza(Model model, @PathVariable("id") int id,@Valid @ModelAttribute Pizza pizza, BindingResult bindingResult) {
+		
+		if (bindingResult.hasErrors()) {
+			
+			for (ObjectError err : bindingResult.getAllErrors()) 
+				System.err.println("error: " + err.getDefaultMessage());
+			
+			model.addAttribute("errors", bindingResult);
+			model.addAttribute("pizza", pizza);
+			
+			return "pizza-edit";
+		}
+		
 		pizzaService.save(pizza);
 		
 	    return "redirect:/";
